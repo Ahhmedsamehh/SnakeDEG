@@ -5,6 +5,9 @@ FASTQ files** all the way to a ranked list of **differentially expressed genes
 (DEGs)** with publication-style QC and diagnostic plots. Point it at your own
 reads + reference, and run one command.
 
+<p align="center">
+  <img src="images/dag.png" alt="DEG Workflow Overview" width="600"/>
+</p>
 
 
 *Rule dependency graph: each box is a step, each arrow a data dependency.*
