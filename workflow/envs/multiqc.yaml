@@ -1,0 +1,8 @@
+# Scans a results folder and merges every tool's logs (fastp, fastqc,
+# hisat2, featureCounts) into ONE interactive HTML report.
+name: multiqc
+channels:
+  - conda-forge
+  - bioconda
+dependencies:
+  - multiqc=1.21

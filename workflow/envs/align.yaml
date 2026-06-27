@@ -1,0 +1,10 @@
+# HISAT2 (splice-aware aligner) + samtools in ONE env so we can pipe
+# hisat2's SAM straight into `samtools sort` without writing a huge
+# intermediate .sam file to disk.
+name: align
+channels:
+  - conda-forge
+  - bioconda
+dependencies:
+  - hisat2=2.2.1
+  - samtools=1.19.2

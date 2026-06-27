@@ -1,0 +1,9 @@
+# Subread provides featureCounts, which assigns aligned reads to genes
+# and produces the raw count matrix DESeq2 needs.
+# >=2.0.2 is required for the --countReadPairs flag.
+name: subread
+channels:
+  - conda-forge
+  - bioconda
+dependencies:
+  - subread=2.0.6

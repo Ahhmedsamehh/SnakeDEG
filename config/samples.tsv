@@ -1,0 +1,7 @@
+sample	condition	fq1	fq2
+control_rep1	control	data/control_rep1_R1.fastq.gz	data/control_rep1_R2.fastq.gz
+control_rep2	control	data/control_rep2_R1.fastq.gz	data/control_rep2_R2.fastq.gz
+control_rep3	control	data/control_rep3_R1.fastq.gz	data/control_rep3_R2.fastq.gz
+treatment_rep1	treatment	data/treatment_rep1_R1.fastq.gz	data/treatment_rep1_R2.fastq.gz
+treatment_rep2	treatment	data/treatment_rep2_R1.fastq.gz	data/treatment_rep2_R2.fastq.gz
+treatment_rep3	treatment	data/treatment_rep3_R1.fastq.gz	data/treatment_rep3_R2.fastq.gz

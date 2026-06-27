@@ -1,0 +1,7 @@
+# Standard per-sample read-quality report (GC, duplication, adapters...).
+name: fastqc
+channels:
+  - conda-forge
+  - bioconda
+dependencies:
+  - fastqc=0.12.1

@@ -1,0 +1,12 @@
+# R + DESeq2 and the plotting libraries used by scripts/deseq2.R.
+name: deseq2
+channels:
+  - conda-forge
+  - bioconda
+dependencies:
+  - bioconductor-deseq2=1.42.0
+  - r-base=4.3
+  - r-ggplot2
+  - r-ggrepel
+  - r-pheatmap
+  - r-rcolorbrewer

@@ -1,0 +1,60 @@
+# =====================================================================
+#  RNA-seq pipeline configuration
+# ---------------------------------------------------------------------
+#  This is the ONLY file (together with samples.tsv) that a new user
+#  needs to edit to run the pipeline on their own data.
+#  Every path here is interpreted relative to the directory you launch
+#  `snakemake` from, which MUST be `personal_pipeline/`.
+# =====================================================================
+
+# Path to the tab-separated sample sheet (see config/samples.tsv).
+samples: "config/samples.tsv"
+
+# ---------------------------------------------------------------------
+#  Reference genome + annotation
+# ---------------------------------------------------------------------
+#  - fasta : genome sequence used to BUILD the HISAT2 index.
+#  - gtf   : gene annotation used by featureCounts to assign reads to genes.
+#  EDIT THESE to point at your own genome + annotation (e.g. download a
+#  GENCODE/Ensembl primary-assembly FASTA and matching GTF into reference/).
+reference:
+  fasta: "reference/genome.fa"
+  gtf:   "reference/annotation.gtf"
+
+# Where the 8 HISAT2 index files (*.ht2) will be written. This is a
+# *prefix*, not a file: HISAT2 appends .1.ht2 ... .8.ht2 to it.
+hisat2_index_prefix: "resources/hisat2_index/genome"
+
+# ---------------------------------------------------------------------
+#  featureCounts (gene-level quantification)
+# ---------------------------------------------------------------------
+featurecounts:
+  # Library strandedness. THIS MATTERS — a wrong value silently throws
+  # away most of your reads.
+  #   0 = unstranded
+  #   1 = stranded (forward / FR)
+  #   2 = reverse-stranded (RF, typical of Illumina TruSeq stranded kits)
+  # 0 is the safe default if you don't know. Check your library prep,
+  # or run `infer_experiment.py` (RSeQC) once to find out.
+  strandedness: 0
+
+# ---------------------------------------------------------------------
+#  Differential expression (DESeq2)
+# ---------------------------------------------------------------------
+deseq2:
+  # Which column of samples.tsv splits your groups.
+  condition_column: "condition"
+  # Baseline group (e.g. healthy / untreated). log2 fold-changes are
+  # expressed RELATIVE to this level: positive = up in treatment.
+  # Must match a value in the `condition` column of samples.tsv.
+  reference_level: "control"
+  # The group you compare against the baseline.
+  treatment_level: "treatment"
+  # A gene is called "significant" if padj < this AND |log2FC| >= lfc.
+  padj_threshold: 0.05
+  lfc_threshold: 1.0
+
+# ---------------------------------------------------------------------
+#  Default thread count handed to multi-threaded tools.
+# ---------------------------------------------------------------------
+threads: 8

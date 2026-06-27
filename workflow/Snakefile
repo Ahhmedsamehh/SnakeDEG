@@ -1,0 +1,56 @@
+# =====================================================================
+#  Snakefile  —  the entry point of the RNA-seq workflow
+# ---------------------------------------------------------------------
+#  General-purpose RNA-seq pipeline:
+#
+#      raw reads
+#        │  fastp            (trim adapters + quality filter)
+#        ▼
+#      trimmed reads ─────►  fastqc ──┐
+#        │  hisat2                    │
+#        ▼                            │
+#      sorted BAM                     ├──►  multiqc  (one QC report)
+#        │  featureCounts             │
+#        ▼                            │
+#      count matrix ──────────────────┘
+#        │  DESeq2
+#        ▼
+#      differentially expressed genes + plots
+#
+#  Run it from inside the personal_pipeline/ directory, e.g.:
+#      snakemake --use-conda --cores 8 -n     # dry run (plan only)
+#      snakemake --use-conda --cores 8        # real run
+# =====================================================================
+
+# Load the config first so it is available while the rule files below
+# are being parsed (common.smk reads config["samples"]).
+configfile: "config/config.yaml"
+
+# Pull in the helpers (sample sheet, input functions) ...
+include: "rules/common.smk"
+# ... then the analysis stages, in logical order.
+include: "rules/trimming.smk"
+include: "rules/quality_control.smk"
+include: "rules/alignment.smk"
+include: "rules/quantification.smk"
+include: "rules/differential_gene_expression.smk"
+
+
+# ---------------------------------------------------------------------
+#  rule all  —  the default target.
+#  Snakemake works BACKWARDS from these files: it figures out every
+#  upstream step needed to produce them. List only the FINAL outputs
+#  you care about; everything else is pulled in automatically.
+# ---------------------------------------------------------------------
+rule all:
+    input:
+        # Aggregated quality-control report for the whole run.
+        "results/qc/multiqc_report.html",
+        # Differential-expression results + figures.
+        "results/deg/deseq2_results.tsv",
+        "results/deg/deseq2_significant.tsv",
+        "results/deg/normalized_counts.tsv",
+        "results/deg/pca_plot.pdf",
+        "results/deg/ma_plot.pdf",
+        "results/deg/volcano_plot.pdf",
+        "results/deg/sample_distance_heatmap.pdf",
